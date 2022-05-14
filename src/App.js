@@ -21,7 +21,7 @@ class App extends Component{
     const players = await lottery.methods.getLotteryPlayer().call();
     const balance = await web3.eth.getBalance(lottery.options.address);
     const minAmountToEnterLottery = await lottery.methods.minAmountToEnterLottery().call();
-    
+
     this.setState({
       manager: manager,
       players: players,
@@ -51,7 +51,7 @@ class App extends Component{
         players: players,
         balance: balance
       });
-      
+
 
     }catch (err){
       this.setState({message: "An error occurred"});
@@ -68,9 +68,7 @@ class App extends Component{
       await lottery.methods.pickWinner().send({
         from: accounts[0]
       });
-      const winner = await lottery.methods.pickWinner().send({
-        from: accounts[0]
-      });
+      const winner = await lottery.methods.getWinnerFromPrevLottery().call();
       const players = await lottery.methods.getLotteryPlayer().call();
       const balance = await web3.eth.getBalance(lottery.options.address);
 
@@ -85,7 +83,7 @@ class App extends Component{
       console.log(err);
       this.setState({message: "An error occurred"});
     }
-    
+
   }
 
   render(){
@@ -97,7 +95,7 @@ class App extends Component{
         <p>Number of lottery players: {this.state.players.length}</p>
 
         <hr/>
-        <form onSubmit={this.onSubmit}> 
+        <form onSubmit={this.onSubmit}>
           <h4>Want to try your luck?!</h4>
           <div>
             <label>
@@ -116,7 +114,7 @@ class App extends Component{
         <hr/>
         <h1>{this.state.message}</h1>
 
-        
+
       </>
     );
   }
